@@ -1,6 +1,8 @@
+// Primer funcion a ejecutarse a cargar el Proyecto
 function doGet() {
     return HtmlService.createTemplateFromFile('web').evaluate().setTitle('stkAgenda');
 }
+
 
 
 function obtenerContactos(){
@@ -11,6 +13,7 @@ function obtenerContactos(){
 
 
 
+// Funciones de uso comun
 function include(archivo) {
     return HtmlService.createHtmlOutputFromFile(archivo).getContent();
 }
