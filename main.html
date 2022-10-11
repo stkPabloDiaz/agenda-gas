@@ -1,23 +1,11 @@
 <main>
-    <!-- Formulario -->
+
+
+    <!-- Botones Superiores -->
     <div class="d-flex justify-content-center my-3">
-        <form onsubmit="insertarContacto()" method="dialog" id="formulario">
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Introduce el Nombre del Contacto</label>
-                <input type="text" class="form-control" name="nombre" id="nombre">
-            </div>
-
-            <div class="mb-3">
-                <label for="correo" class="form-label">Introduce el Correo del Contacto</label>
-                <input type="email" class="form-control" name="correo" id="correo">
-            </div>
-
-            <!-- Botones -->
-            <button type="button" class="btn btn-success m-3" onclick="crearTablaContactos()">Mostrar Contactos</button>
-            <button type="submit" class="btn btn-primary">Crear Contacto</button>
-        </form>
+        <button type="button" class="btn btn-success m-2" onclick="crearTablaContactos()">Mostrar Contactos</button>
+        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#crearContactoModal">Nuevo Contacto</button>
     </div>
-
 
     <!-- Tabla de Contactos -->
     <div class="container col-12 col-lg-6 mb-4 d-flex justify-content-center" id="divContactos"></div>
@@ -26,7 +14,8 @@
     <!-- Notificaciones -->
     <div class="position-fixed bottom-0 end-0 p-1" style="z-index: 11">
         <!-- Toast-->
-        <div id="notificacion" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="notificacion" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive"
+            aria-atomic="true">
             <!-- Cabecera -->
             <div class="toast-header p-0">
                 <div class="icono-notificacion"><i id="iconoNotificacion"></i></div>
@@ -38,5 +27,38 @@
         </div>
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="crearContactoModal" tabindex="-1" aria-labelledby="tituloCrearContactoModal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloCrearContactoModal">Crear Contacto</h5>
+                </div>
+
+                <!-- Formulario de Crear Contacto -->
+                <form onsubmit="insertarContacto()" method="dialog" id="formulario">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Introduce el Nombre del Contacto</label>
+                            <input type="text" class="form-control" name="nombre" id="nombre" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Introduce el Correo del Contacto</label>
+                            <input type="email" class="form-control" name="correo" id="correo" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Crear Contacto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </main>
