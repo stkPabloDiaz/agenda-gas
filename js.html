@@ -23,26 +23,44 @@
         let tablaHeader = document.createElement('thead');
         let tablaBody = document.createElement('tbody');
 
-        Array.from(obj).forEach((filaActual, i) => {
-            let fila = document.createElement('tr');
-            filaActual.forEach(celdaActual => {
-                let celda = document.createElement('td');
-                celda.textContent = celdaActual;
-                fila.appendChild(celda);
-            });
-            if (i == 0) {
-                tablaHeader.appendChild(fila);
-                tabla.appendChild(tablaHeader);
-            } else {
-                tablaBody.appendChild(fila);
-            }
-        });
+        // Header de la Tabla
+        let primeraFila = document.createElement('tr');
+        for (let i = 0; i<obj[0].length; i++) {
+            let celda = document.createElement('td');
+            celda.textContent = obj[0][i];
+            primeraFila.appendChild(celda);
+        }
 
-        // Agregamos el cuerpo a la Tabla
-        tabla.appendChild(tablaBody);
+        //Agregar columna Opciones
+        let celdaOpciones = document.createElement('td');
+        celdaOpciones.textContent = 'OPCIONES';
+        celdaOpciones.classList.add('text-center');
+        primeraFila.appendChild(celdaOpciones);
+
+
+        // Agregar la fila al Header de la Tabla
+        tablaHeader.appendChild(primeraFila);
+        tabla.appendChild(tablaHeader);
+
+        // Body de la Tabla
+        for (let i = 1; i<obj.length; i++) {
+            let fila = document.createElement('tr');
+            for (let j = 0; j<obj[i].length; j++) {
+                let celda = document.createElement('td');
+                celda.textContent = obj[i][j];
+                fila.appendChild(celda);
+            }
+            // Agregar los botones a la Fila (Editar y Borrar)
+            fila.appendChild(crearCeldaBotones(i+1));
+
+            tablaBody.appendChild(fila);
+        }
 
         // Agregamos Clases a la Cabecera de la Tabla
         tablaHeader.classList.add('table-dark');
+
+        // Agregamos el cuerpo a la Tabla
+        tabla.appendChild(tablaBody);
 
         // Agregamos Clases a la Tabla
         tabla.classList.add('table', 'table-striped', 'border', 'border-4', 'border-dark');
@@ -67,6 +85,80 @@
         eliminarLoader();
     }
 
+
+
+    function crearCeldaBotones(numFila){
+
+        // Crear Celda
+        let celda = document.createElement('td');
+        celda.classList.add('text-center');
+
+        // Crear Boton Borrar
+        let botonBorrar = document.createElement('button');
+        botonBorrar.onclick = () => borrarContacto(numFila);
+        botonBorrar.classList.add('btn', 'btn-danger', 'm-1');
+
+        // Icono Borrar
+        let iconoBorrar = document.createElement('i');
+        iconoBorrar.classList.add('bi', 'bi-trash');
+        botonBorrar.appendChild(iconoBorrar);
+
+
+        // Crear Boton Modificar
+        let botonModificar = document.createElement('button');
+//        botonModificar.onclick = () => modificarContacto(numFila);
+        botonModificar.classList.add('btn', 'btn-warning', 'm-1');
+
+        // Icono Modificar
+        let iconoModificar = document.createElement('i');
+        iconoModificar.classList.add('bi', 'bi-pencil');
+        botonModificar.appendChild(iconoModificar);
+
+        // Agregar Botones a la Celda
+        celda.appendChild(botonBorrar);
+        celda.appendChild(botonModificar);
+
+        return celda;
+
+    }
+
+    function borrarContacto(numFila) {
+        // Eliminar Tabla
+        eliminarTabla();
+
+        // Crear Loader
+        crearLoaderPuntos('divContactos');
+
+        google.script.run
+            .withSuccessHandler(borrarContactoOk)
+            .withFailureHandler(borrarContactoError)
+            .borrarContacto(numFila);
+    }
+
+
+    function borrarContactoOk() {
+        // Mostrar Notificacion
+        crearNotificacionOk('Contacto Borrado correctamente','Borrar Contacto');
+
+        // Eliminar Loader
+        eliminarLoader();
+
+        // Mostrar la Tabla nuevamente
+        crearTablaContactos();
+    }
+
+
+    function borrarContactoError() {
+        // Mostrar Notificacion
+        crearNotificacionError('El Contacto no se ha podido Borrar','Borrar Contacto');
+
+        // Eliminar Loader
+        eliminarLoader();
+
+        // Mostrar la Tabla nuevamente
+        crearTablaContactos();
+        
+    }
 
 
     // Funcion que Crea un Nuevo Contacto

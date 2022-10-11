@@ -19,6 +19,11 @@ function insertarContacto(nombre, apellido, correo, telefono) {
 }
 
 
+// Funcion para Borrar el Contacto de la fila pasado como argumento
+function borrarContacto(numFila) {
+    HOJA.deleteRow(numFila);
+}
+
 
 
 // Funciones de uso comun
