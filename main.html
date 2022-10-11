@@ -1,16 +1,29 @@
 <main>
-    <!-- Botones -->
-    <div class="d-flex justify-content-center mb-4">
-        <button class="btn btn-success m-3" onclick="crearTablaContactos()">Mostrar Contactos</button>
+    <!-- Formulario -->
+    <div class="d-flex justify-content-center my-3">
+        <form onsubmit="insertarContacto()" method="dialog" id="formulario">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Introduce el Nombre del Contacto</label>
+                <input type="text" class="form-control" name="nombre" id="nombre">
+            </div>
+
+            <div class="mb-3">
+                <label for="correo" class="form-label">Introduce el Correo del Contacto</label>
+                <input type="email" class="form-control" name="correo" id="correo">
+            </div>
+
+            <!-- Botones -->
+            <button type="button" class="btn btn-success m-3" onclick="crearTablaContactos()">Mostrar Contactos</button>
+            <button type="submit" class="btn btn-primary">Crear Contacto</button>
+        </form>
     </div>
 
 
     <!-- Tabla de Contactos -->
-    <div class="container col-12 col-lg-6 mb-4 d-flex justify-content-center" id="divContactos">
-    </div>
+    <div class="container col-12 col-lg-6 mb-4 d-flex justify-content-center" id="divContactos"></div>
 
 
-    <!-- Notificaciones-->
+    <!-- Notificaciones -->
     <div class="position-fixed bottom-0 end-0 p-1" style="z-index: 11">
         <!-- Toast-->
         <div id="notificacion" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
