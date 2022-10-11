@@ -73,7 +73,9 @@
     function insertarContacto() {
         // Obtener Datos
         let nombre = document.getElementById('nombre').value;
+        let apellido = document.getElementById('apellido').value;
         let correo = document.getElementById('correo').value;
+        let telefono = document.getElementById('telefono').value;
 
         // Cerrar Modal
         bootstrap.Modal.getInstance(document.getElementById('crearContactoModal')).hide();
@@ -87,7 +89,7 @@
         google.script.run
             .withSuccessHandler(crearContactoOk)
             .withFailureHandler(crearContactoError)
-            .insertarContacto(nombre, correo);
+            .insertarContacto(nombre, apellido, correo, telefono);
     }
 
     // Si todo sale bien Borramos el contenido de los Inputs
