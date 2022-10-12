@@ -9,7 +9,7 @@ function doPost(datos) {
     return HtmlService.createTemplateFromFile('web').evaluate().setTitle('stkAgenda');
 }
 
-function obtenerContactos(){
+function obtenerDatos(){
     return HOJA.getDataRange().getValues();
 }
 
