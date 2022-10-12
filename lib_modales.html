@@ -1,4 +1,7 @@
 <script>
+const IMAGEN_PERFIL_INICIO = 'https://drive.google.com/uc?export=view&id=10PBu9vPs21oJkQgo4qXDKS49VAFTtbpr';
+
+
 function abrirModalCrearContacto() {
     // Crear Boton para Crear
     let boton = document.getElementById('botonCrearModificar');
@@ -17,6 +20,8 @@ function abrirModalCrearContacto() {
     document.getElementById('apellido').value = '';
     document.getElementById('correo').value = '';
     document.getElementById('telefono').value = '';
+    document.getElementById('imagen').value = '';
+    document.getElementById('imgForm').src = IMAGEN_PERFIL_INICIO;
 
     // Abrir Modal
     bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show();

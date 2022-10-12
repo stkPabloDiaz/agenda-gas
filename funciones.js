@@ -1,4 +1,7 @@
 const HOJA = SpreadsheetApp.openById('1W4sBpAxAa8P1HYkLpmeFmyd3vVof_HL_OgCLKjybcmc').getActiveSheet();
+const CARPETA_IMAGENES = DriveApp.getFolderById('1OdH5NPRlnmMt-xVu2heHrNq7cdorj5yS');
+const CABECERA_URL_IMAGEN_DRIVE = 'https://drive.google.com/uc?export=view&id=';
+
 
 // Primer funcion a ejecutarse a cargar el Proyecto
 function doGet() {
@@ -14,8 +17,13 @@ function obtenerDatos(){
 }
 
 // Funcion para Agregar Contacto
-function insertarContacto(nombre, apellido, correo, telefono) {
-    HOJA.appendRow([nombre,apellido,correo,telefono]);
+function insertarContacto(contacto, imagen) {
+    if (imagen) {
+        let blob = Utilities.newBlob(imagen.datos, imagen.tipo, imagen.nombre);
+        let archivo = CARPETA_IMAGENES.createFile(blob);
+        contacto.imagen = CABECERA_URL_IMAGEN_DRIVE+archivo.getId();
+    }
+    HOJA.appendRow([contacto.nombre, contacto.apellido, contacto.correo, contacto.telefono, contacto.imagen]);
 }
 
 
