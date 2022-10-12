@@ -1,0 +1,123 @@
+<script>
+//
+//               N O T I F I C A C I O N E S
+//
+
+const ICONO_CHECK = 'bi-check2-square';
+const ICONO_PAPELERA = 'bi-trash';
+const ICONO_CONTACTO = 'bi-person-plus-fill';
+const ICONO_ERROR = 'bi-bug';
+const ICONO_ADVERTENCIA = 'bi-exclamation-square';
+
+const LOTTIE_CHECK = 'https://assets4.lottiefiles.com/packages/lf20_lb7e63po.json';
+const LOTTIE_PAPELERA = 'https://assets2.lottiefiles.com/packages/lf20_YY3hso.json';
+const LOTTIE_CONTACTO = 'https://assets7.lottiefiles.com/packages/lf20_IRbWtO/Contact Friend.json';
+const LOTTIE_ERROR = 'https://assets8.lottiefiles.com/packages/lf20_yw3nyrsv.json';
+const LOTTIE_ADVERTENCIA = 'https://assets6.lottiefiles.com/packages/lf20_Tkwjw8.json';
+
+
+function crearNotificacionOK(mensaje, titulo) {
+    crearNotificacion(titulo, mensaje, LOTTIE_CHECK, '--color-verde-oscuro');
+}
+
+function crearNotificacionERROR(mensaje, titulo) {
+    crearNotificacion(titulo, mensaje, LOTTIE_ERROR, '--color-rojo-oscuro');
+}
+
+function crearNotificacionCONTACTO(mensaje, titulo) {
+    crearNotificacion(titulo, mensaje, LOTTIE_CONTACTO, '--color-azul-oscuro');
+    
+}
+
+function crearNotificacionADVERTENCIA(mensaje, titulo) {
+    crearNotificacion(titulo, mensaje, LOTTIE_ADVERTENCIA, '--color-amarillo-oscuro');
+    
+}
+
+function crearNotificacionBORRAR(mensaje, titulo) {
+    crearNotificacion(titulo, mensaje, LOTTIE_PAPELERA, '--color-gris-oscuro');
+    
+}
+
+
+function crearNotificacion(titulo, mensaje, lottie, color) {
+    let notificacion = crearAtributosNotificacion();
+    let cabeceraNotificacion = crearCabeceraNotificacion(titulo, lottie);
+    let cuerpoNotificacion = crearCuerpoNotificacion(mensaje);
+
+    // Agregar Cabecera y Cuerpo
+    notificacion.appendChild(cabeceraNotificacion);
+    notificacion.appendChild(cuerpoNotificacion);
+
+    // Establecer color
+    notificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(color);
+
+    // Evento
+    notificacion.addEventListener('hidden.bs.toast', function () {
+        this.remove();
+    });
+
+    // Agregamos al Contenedor de Notificacion
+    document.getElementById('contenedorNotificaciones').appendChild(notificacion);
+
+    // Instanciamos y mostramos
+    bootstrap.Toast.getOrCreateInstance(notificacion).show();
+
+}
+
+function crearAtributosNotificacion() {
+    let notificacion = document.createElement('div');
+    notificacion.classList.add('toast', 'align-items-center', 'text-white', 'border-0');
+    notificacion.setAttribute('role', 'alert');
+    notificacion.setAttribute('aria-live', 'assertive');
+    notificacion.setAttribute('aria-atomic', 'true');
+
+    return notificacion;
+}
+
+function crearCabeceraNotificacion(titulo, lottie) {
+    // Crear cabecera
+    let cabeceraNotificacion = document.createElement('div');
+    cabeceraNotificacion.classList.add('toast-header', 'p-0');
+
+    // Crear Icono pasando el contenedor
+    crearLottieNotificacion(cabeceraNotificacion, lottie);
+
+    // Crear el Titulo
+    let tituloNotificacion = document.createElement('strong');
+    tituloNotificacion.classList.add('mx-2');
+    tituloNotificacion.textContent = titulo;
+
+    cabeceraNotificacion.appendChild(tituloNotificacion);
+    return cabeceraNotificacion;
+}
+
+function crearLottieNotificacion (contenedor, lottie) {
+    let divIcono = document.createElement('div');
+    let iconoNotificacion = document.createElement('lottie-player');
+
+    // Establecer atributos
+    iconoNotificacion.setAttribute('src', lottie);
+    iconoNotificacion.setAttribute('background', 'transparent');
+    iconoNotificacion.setAttribute('speed', '1');
+    iconoNotificacion.style.width = '4rem';
+    iconoNotificacion.style.height = '4rem';
+    iconoNotificacion.autoplay = true;
+
+    divIcono.appendChild(iconoNotificacion);
+    contenedor.appendChild(divIcono);
+}
+
+function crearCuerpoNotificacion(mensaje) {
+    let cuerpoNotificacion = document.createElement('div');
+    cuerpoNotificacion.classList.add('toast-body');
+    cuerpoNotificacion.textContent = mensaje;
+
+    return cuerpoNotificacion;
+}
+
+//
+//  FINAL:             N O T I F I C A C I O N E S
+//
+
+</script>

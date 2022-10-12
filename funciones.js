@@ -31,6 +31,10 @@ function modificarContacto(numFila, datos) {
 }
 
 
+function importarContactos() {
+    
+}
+
 // Funciones de uso comun
 function include(archivo) {
     return HtmlService.createHtmlOutputFromFile(archivo).getContent();
