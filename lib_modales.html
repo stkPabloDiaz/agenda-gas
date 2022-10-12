@@ -49,6 +49,8 @@ function abrirModalModificarContacto(contacto) {
     document.getElementById('apellido').value = contacto.apellido;
     document.getElementById('correo').value = contacto.correo;
     document.getElementById('telefono').value = contacto.telefono;
+    document.getElementById('imgForm').src = contacto.imagen;
+    document.getElementById('imagen').value = '';
 
     // Abrir Modal
     bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show();

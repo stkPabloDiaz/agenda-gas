@@ -18,12 +18,23 @@ function obtenerDatos(){
 
 // Funcion para Agregar Contacto
 function insertarContacto(contacto, imagen) {
-    if (imagen) {
-        let blob = Utilities.newBlob(imagen.datos, imagen.tipo, imagen.nombre);
-        let archivo = CARPETA_IMAGENES.createFile(blob);
-        contacto.imagen = CABECERA_URL_IMAGEN_DRIVE+archivo.getId();
-    }
+    if (imagen) contacto.imagen = guardarImagen(imagen);
     HOJA.appendRow([contacto.nombre, contacto.apellido, contacto.correo, contacto.telefono, contacto.imagen]);
+}
+
+
+// Funcion para Modificar el Contacto de la fila pasado como argumento, con los valores del Objeto datos
+function modificarContacto(contacto, imagen) {
+    if (imagen) contacto.imagen = guardarImagen(imagen);
+
+    let celdas = HOJA.getRange('A'+contacto.fila+':E'+contacto.fila);
+    celdas.setValues([[contacto.nombre, contacto.apellido, contacto.correo, contacto.telefono, contacto.imagen]]);
+}
+
+function guardarImagen(imagen) {
+    let blob = Utilities.newBlob(imagen.datos, imagen.tipo, imagen.nombre);
+    let archivo = CARPETA_IMAGENES.createFile(blob);
+    return CABECERA_URL_IMAGEN_DRIVE+archivo.getId();
 }
 
 
@@ -32,11 +43,6 @@ function borrarContacto(numFila) {
     HOJA.deleteRow(numFila);
 }
 
-// Funcion para Modificar el Contacto de la fila pasado como argumento, con los valores del Objeto datos
-function modificarContacto(numFila, datos) {
-    let celdas = HOJA.getRange('A'+numFila+':D'+numFila);
-    celdas.setValues([[datos.nombre, datos.apellido, datos.correo, datos.telefono]]);
-}
 
 
 function importarContactos() {
@@ -51,6 +57,8 @@ function importarContactos() {
 function insertarContactoJSON (contacto) {
     HOJA.appendRow([contacto.name.first, contacto.name.last, contacto.email, contacto.phone, contacto.picture.large]);
 }
+
+
 
 
 

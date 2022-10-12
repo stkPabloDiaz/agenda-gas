@@ -1,4 +1,5 @@
 <script>
+    /// EVENTOS A ESCUCHAR
     // Boton Subir
     window.addEventListener('scroll', function () {
         if (this.window.scrollY > 500) {
@@ -14,6 +15,7 @@
         document.getElementById('imgForm').src = URL.createObjectURL(this.files[0])
     });
 
+    /// FINAL: EVENTOS A ESCUCHAR
 
 
     //      COMIENZO DE FUNCIONES
@@ -42,17 +44,35 @@
         // Cerrar Modal
         bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).hide();
 
-        // Obtener nuevos datos a partir del Formulario
-        let nombre = document.getElementById('nombre').value;
-        let apellido = document.getElementById('apellido').value;
-        let correo = document.getElementById('correo').value;
-        let telefono = document.getElementById('telefono').value;
+        let contacto = guardarDatosContacto();
+        contacto.fila = numFila;
 
+        let archivo = document.getElementById('imagen').files[0];
 
-        google.script.run
-            .withSuccessHandler(modificarContactoOk)
-            .withFailureHandler(modificarContactoError)
-            .modificarContacto(numFila, { nombre, apellido, correo, telefono });
+        if (archivo) subirImagenModificar(contacto, archivo)
+        else {
+            google.script.run
+                .withSuccessHandler(modificarContactoOk)
+                .withFailureHandler(modificarContactoError)
+                .modificarContacto(contacto);
+        }
+    }
+
+    function subirImagenModificar(contacto, archivo) {
+        let fr = new FileReader();
+        fr.readAsArrayBuffer(archivo);
+
+        fr.onload = function () {
+            let imagen = {
+                nombre: archivo.name,
+                tipo: archivo.type,
+                datos: Array.from(new Int8Array(this.result))
+            };
+            google.script.run
+                .withSuccessHandler(modificarContactoOk)
+                .withFailureHandler(modificarContactoError)
+                .modificarContacto(contacto, imagen);
+        }
     }
 
     function modificarContactoOk() {
@@ -107,7 +127,7 @@
         let contacto = guardarDatosContacto();
         let archivo = document.getElementById('imagen').files[0];
 
-        if (archivo) subirImagen(contacto, archivo)
+        if (archivo) subirImagenInsertar(contacto, archivo)
         else {
             google.script.run
                 .withSuccessHandler(crearContactoOk)
@@ -117,18 +137,7 @@
 
     }
 
-    function guardarDatosContacto() {
-        let contacto = {
-            nombre: document.getElementById('nombre').value,
-            apellido: document.getElementById('apellido').value,
-            correo: document.getElementById('correo').value,
-            telefono: document.getElementById('telefono').value,
-            imagen: document.getElementById('imgForm').src
-        }
-        return contacto;
-    }
-
-    function subirImagen(contacto, archivo) {
+    function subirImagenInsertar(contacto, archivo) {
         let fr = new FileReader();
         fr.readAsArrayBuffer(archivo);
 
@@ -143,11 +152,8 @@
                 .withFailureHandler(crearContactoError)
                 .insertarContacto(contacto, imagen);
         }
-
     }
 
-
-    // Si todo sale bien Borramos el contenido de los Inputs
     function crearContactoOk() {
         document.getElementById('nombre').value = '';
         document.getElementById('correo').value = '';
@@ -158,7 +164,6 @@
         mostrar();
     }
 
-    // Si Existen Errores
     function crearContactoError() {
         // Mostrar notificacion
         crearNotificacionERROR('No se ha podido insertar el contacto', 'Insertar Contacto');
@@ -167,6 +172,16 @@
     }
     // FINAL:    INSERTAR CONTACTO
 
+    function guardarDatosContacto() {
+        let contacto = {
+            nombre: document.getElementById('nombre').value,
+            apellido: document.getElementById('apellido').value,
+            correo: document.getElementById('correo').value,
+            telefono: document.getElementById('telefono').value,
+            imagen: document.getElementById('imgForm').src
+        }
+        return contacto;
+    }
 
     //      
     //      FUNCIONES RELACIONADAS CON CONTACTOS
@@ -185,25 +200,21 @@
         eliminarLoader();
     }
 
-
     function limpiar() {
         eliminarTabla();
         eliminarTarjetas();
         crearLoaderPuntos('divContactos');
     }
 
-    // Borra la tabla de Contactos si ya existiera
     function eliminarTabla() {
         let tabla = document.getElementById('tablaContactos');
         if (tabla) tabla.remove();
     }
 
-    // Borra Tarjetas de Contactos si ya existiera
     function eliminarTarjetas() {
         let tarjetas = document.getElementById('tarjetasContactos');
         if (tarjetas) tarjetas.remove();
     }
-
 
     //      
     //      LIMPIAR TABLAS Y TARJETAS
