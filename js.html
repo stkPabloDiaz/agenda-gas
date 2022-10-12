@@ -1,5 +1,22 @@
 <script>
 
+// Boton Subir
+window.addEventListener('scroll', function() {
+    if(this.window.scrollY > 500) {
+        document.getElementById('botonSubir').style.transform = "scale(1)";
+    }
+    if(this.window.scrollY < 500) {
+        document.getElementById('botonSubir').style.transform = "scale(0)";
+    }
+});
+
+// Ejecuta el Subir el Scroll desde el Boton
+function subirArriba() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+
     // Funcion que crea y muestra la Tabla (listado) de contactos
     function crearTablaContactos() {
         // Borramos la Tabla si existe
