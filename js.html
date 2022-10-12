@@ -1,4 +1,12 @@
 <script>
+
+const LOTTIE_CHECK = 'https://assets4.lottiefiles.com/packages/lf20_lb7e63po.json';
+const LOTTIE_PAPELERA = 'https://assets2.lottiefiles.com/packages/lf20_YY3hso.json';
+const LOTTIE_CONTACTO = 'https://assets7.lottiefiles.com/packages/lf20_IRbWtO/Contact Friend.json';
+const LOTTIE_ERROR = 'https://assets8.lottiefiles.com/packages/lf20_yw3nyrsv.json';
+const LOTTIE_ADVERTENCIA = 'https://assets6.lottiefiles.com/packages/lf20_Tkwjw8.json';
+const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62chJ.json';
+
     /// EVENTOS A ESCUCHAR
     // Boton Subir
     window.addEventListener('scroll', function () {
@@ -203,7 +211,8 @@
     function limpiar() {
         eliminarTabla();
         eliminarTarjetas();
-        crearLoaderPuntos('divContactos');
+        // crearLoaderPuntos('divContactos');
+        crearLoaderLottie('divContactos',LOTTIE_LOADER_NUBE);
     }
 
     function eliminarTabla() {
