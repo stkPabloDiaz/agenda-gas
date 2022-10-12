@@ -49,6 +49,16 @@
                 let celda = document.createElement('td');
                 celda.textContent = obj[i][j];
                 fila.appendChild(celda);
+
+                // Si es la quinta columna (IMAGEN)
+                if (j == 4) {
+                    // Crear la Imagen
+                    celda.textContent= '';
+                    let imagen = document.createElement('img');
+                    imagen.classList.add('img-fluid', 'rounded');
+                    imagen.src = obj[i][j];
+                    celda.appendChild(imagen);
+                }
             }
             // Agregar los botones a la Fila (Editar y Borrar)
             fila.appendChild(crearCeldaBotones(i+1,obj[i]));
@@ -302,6 +312,34 @@
         let tabla = document.getElementById('tablaContactos');
         if (tabla) tabla.remove();
     }
+
+
+
+    function importarContacto(){
+        // Borramos la Tabla si existe
+        eliminarTabla();
+
+        // Crear Loader
+        crearLoaderPuntos('divContactos');
+
+        google.script.run
+        .withSuccessHandler(importarContactosOk)
+        .withFailureHandler(importarContactosError)
+        .importarContactos();
+    }
+
+    function importarContactosOk() {
+        crearNotificacionOK('Se han agregado los Contantos correctamente', 'Importar Contactos');
+        eliminarLoader();
+        crearTablaContactos();
+    }
+
+    function importarContactosError() {
+        crearNotificacionERROR('No se han podido Importar los contactos', 'Importar Contactos');
+        eliminarLoader();
+        crearTablaContactos();
+    }
+
 
 
     // INICIO: Funciones para Crear y Eliminar el Loader
