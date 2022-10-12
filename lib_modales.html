@@ -1,0 +1,52 @@
+<script>
+function abrirModalCrearContacto() {
+    // Crear Boton para Crear
+    let boton = document.getElementById('botonCrearModificar');
+    boton.textContent = 'Crear Contacto';
+    boton.classList = '';
+    boton.classList.add('btn', 'btn-success');
+
+    // Cambiar Titulo del Modal
+    document.getElementById('tituloModal').textContent = 'Crear Contacto';
+
+    // Modificar el SUBMIT
+    document.getElementById('formulario').onsubmit = () => insertarContacto();
+
+    // Obtener datos y llenar el formulario
+    document.getElementById('nombre').value = '';
+    document.getElementById('apellido').value = '';
+    document.getElementById('correo').value = '';
+    document.getElementById('telefono').value = '';
+
+    // Abrir Modal
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show();
+}
+
+
+
+
+function abrirModalModificarContacto(numFila, datosContacto) {
+    
+    // Crear Boton para Modificar
+    let boton = document.getElementById('botonCrearModificar');
+    boton.textContent = 'Modificar Contacto';
+    boton.classList = '';
+    boton.classList.add('btn', 'btn-warning');
+
+    // Cambiar Titulo del Modal
+    document.getElementById('tituloModal').textContent = 'Modificar Contacto';
+
+    // Modificar el SUBMIT
+    document.getElementById('formulario').onsubmit = () => modificarContacto(numFila);
+
+    // Obtener datos y llenar el formulario
+    document.getElementById('nombre').value = datosContacto.nombre;
+    document.getElementById('apellido').value = datosContacto.apellido;
+    document.getElementById('correo').value = datosContacto.correo;
+    document.getElementById('telefono').value = datosContacto.telefono;
+
+    // Abrir Modal
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show();
+}
+
+</script>
