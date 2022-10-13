@@ -1,4 +1,7 @@
 <script>
+/////////////////////////////////////
+////  CONSTANTES
+/////////////////////////////////////
 
 const LOTTIE_CHECK = 'https://assets4.lottiefiles.com/packages/lf20_lb7e63po.json';
 const LOTTIE_PAPELERA = 'https://assets2.lottiefiles.com/packages/lf20_YY3hso.json';
@@ -7,7 +10,11 @@ const LOTTIE_ERROR = 'https://assets8.lottiefiles.com/packages/lf20_yw3nyrsv.jso
 const LOTTIE_ADVERTENCIA = 'https://assets6.lottiefiles.com/packages/lf20_Tkwjw8.json';
 const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62chJ.json';
 
-    /// EVENTOS A ESCUCHAR
+
+/////////////////////////////////////
+////  EVENTOS
+/////////////////////////////////////
+
     // Boton Subir
     window.addEventListener('scroll', function () {
         if (this.window.scrollY > 500) {
@@ -18,35 +25,58 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
         }
     });
 
+
     // Cargar Imagen
     document.getElementById('imagen').addEventListener("change", function () {
         document.getElementById('imgForm').src = URL.createObjectURL(this.files[0])
     });
 
-    /// FINAL: EVENTOS A ESCUCHAR
+
+    // Dragover
+    document.getElementById('imgForm').addEventListener('dragover', function(event) {
+        event.preventDefault();
+        this.style.filter = 'opacity(0%)';
+        document.getElementById('cajaIconoForm').style.display = 'flex';
+    });
+
+    // Dragleave
+    document.getElementById('imgForm').addEventListener('dragleave', function(event) {
+        this.style.filter = 'opacity(100%)';
+        document.getElementById('cajaIconoForm').style.display = 'none';
+    });
 
 
-    //      COMIENZO DE FUNCIONES
-    //      FUNCIONES VARIAS DE UTILIDADES
-    //
+    // Drop
+    document.getElementById('imgForm').addEventListener('drop', function(event) {
+        event.preventDefault();
+        let ficheros = event.dataTransfer.files;
 
-    // Ejecuta el Subir el Scroll desde el Boton
+        // Pasar los archivos al Input
+        document.getElementById('imagen').files = ficheros;
+
+        // Creamos una URL para mostrar la imagen
+        document.getElementById('imgForm').src = URL.createObjectURL(ficheros[0]);
+
+        this.style.filter = 'opacity(100%)';
+        document.getElementById('cajaIconoForm').style.display = 'none';
+    });
+
+
+
+
+/////////////////////////////////////
+////  FUNCIONES
+/////////////////////////////////////
+
+
     function subirArriba() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
-    //      
-    //      FUNCIONES VARIAS DE UTILIDADES
-    //      FINAL DE FUNCIONES
 
 
 
 
-    //      COMIENZO DE FUNCIONES
-    //      FUNCIONES RELACIONADAS CON CONTACTOS
-    //
-
-    // INICIO:    MODIFICAR CONTACTO
     function modificarContacto(numFila) {
         limpiar();
         // Cerrar Modal
@@ -95,11 +125,9 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
 
         mostrar();
     }
-    // FINAL:    MODIFICAR CONTACTO
 
 
 
-    // INICIO:    BORRAR CONTACTO
     function borrarContacto(numFila) {
         limpiar();
 
@@ -123,11 +151,9 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
         mostrar();
 
     }
-    // FINAL:    BORRAR CONTACTO
 
 
 
-    // INICIO:    INSERTAR CONTACTO
     function insertarContacto() {
         limpiar();
         bootstrap.Modal.getInstance(document.getElementById('crearContactoModal')).hide();
@@ -178,7 +204,8 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
 
         mostrar();
     }
-    // FINAL:    INSERTAR CONTACTO
+
+
 
     function guardarDatosContacto() {
         let contacto = {
@@ -191,17 +218,7 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
         return contacto;
     }
 
-    //      
-    //      FUNCIONES RELACIONADAS CON CONTACTOS
-    //      FINAL DE FUNCIONES
 
-
-
-
-
-    //      COMIENZO DE FUNCIONES
-    //      LIMPIAR TABLAS Y TARJETAS
-    //
 
     function mostrar() {
         crearTarjetaContactos();
@@ -225,15 +242,9 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
         if (tarjetas) tarjetas.remove();
     }
 
-    //      
-    //      LIMPIAR TABLAS Y TARJETAS
-    //      FINAL DE FUNCIONES
 
 
 
-    //      COMIENZO DE FUNCIONES
-    //      IMPORTAR CONTACTOS A TRAVES DE API DE TERCEROS
-    //
     function importarContacto() {
         limpiar();
         google.script.run
@@ -251,10 +262,6 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
         crearNotificacionERROR('No se han podido Importar los contactos', 'Importar Contactos');
         mostrar();
     }
-
-//      
-//      IMPORTAR CONTACTOS A TRAVES DE API DE TERCEROS
-//      FINAL DE FUNCIONES
 
 
 </script>
