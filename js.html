@@ -1,19 +1,19 @@
 <script>
-/////////////////////////////////////
-////  CONSTANTES
-/////////////////////////////////////
+    /////////////////////////////////////
+    ////  CONSTANTES
+    /////////////////////////////////////
 
-const LOTTIE_CHECK = 'https://assets4.lottiefiles.com/packages/lf20_lb7e63po.json';
-const LOTTIE_PAPELERA = 'https://assets2.lottiefiles.com/packages/lf20_YY3hso.json';
-const LOTTIE_CONTACTO = 'https://assets7.lottiefiles.com/packages/lf20_IRbWtO/Contact Friend.json';
-const LOTTIE_ERROR = 'https://assets8.lottiefiles.com/packages/lf20_yw3nyrsv.json';
-const LOTTIE_ADVERTENCIA = 'https://assets6.lottiefiles.com/packages/lf20_Tkwjw8.json';
-const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62chJ.json';
+    const LOTTIE_CHECK = 'https://assets4.lottiefiles.com/packages/lf20_lb7e63po.json';
+    const LOTTIE_PAPELERA = 'https://assets2.lottiefiles.com/packages/lf20_YY3hso.json';
+    const LOTTIE_CONTACTO = 'https://assets7.lottiefiles.com/packages/lf20_IRbWtO/Contact Friend.json';
+    const LOTTIE_ERROR = 'https://assets8.lottiefiles.com/packages/lf20_yw3nyrsv.json';
+    const LOTTIE_ADVERTENCIA = 'https://assets6.lottiefiles.com/packages/lf20_Tkwjw8.json';
+    const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62chJ.json';
 
 
-/////////////////////////////////////
-////  EVENTOS
-/////////////////////////////////////
+    /////////////////////////////////////
+    ////  EVENTOS
+    /////////////////////////////////////
 
     // Boton Subir
     window.addEventListener('scroll', function () {
@@ -33,21 +33,21 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
 
 
     // Dragover
-    document.getElementById('imgForm').addEventListener('dragover', function(event) {
+    document.getElementById('imgForm').addEventListener('dragover', function (event) {
         event.preventDefault();
         this.style.filter = 'opacity(0%)';
-        document.getElementById('cajaIconoForm').style.display = 'flex';
+        document.getElementById('lottieForm').style.display = 'flex';
     });
 
     // Dragleave
-    document.getElementById('imgForm').addEventListener('dragleave', function(event) {
+    document.getElementById('imgForm').addEventListener('dragleave', function (event) {
         this.style.filter = 'opacity(100%)';
-        document.getElementById('cajaIconoForm').style.display = 'none';
+        document.getElementById('lottieForm').style.display = 'none';
     });
 
 
     // Drop
-    document.getElementById('imgForm').addEventListener('drop', function(event) {
+    document.getElementById('imgForm').addEventListener('drop', function (event) {
         event.preventDefault();
         let ficheros = event.dataTransfer.files;
 
@@ -58,15 +58,15 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
         document.getElementById('imgForm').src = URL.createObjectURL(ficheros[0]);
 
         this.style.filter = 'opacity(100%)';
-        document.getElementById('cajaIconoForm').style.display = 'none';
+        document.getElementById('lottieForm').style.display = 'none';
     });
 
 
 
 
-/////////////////////////////////////
-////  FUNCIONES
-/////////////////////////////////////
+    /////////////////////////////////////
+    ////  FUNCIONES
+    /////////////////////////////////////
 
 
     function subirArriba() {
@@ -229,7 +229,7 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
         eliminarTabla();
         eliminarTarjetas();
         // crearLoaderPuntos('divContactos');
-        crearLoaderLottie('divContactos',LOTTIE_LOADER_NUBE);
+        crearLoaderLottie('divContactos', LOTTIE_LOADER_NUBE);
     }
 
     function eliminarTabla() {
@@ -264,4 +264,14 @@ const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62ch
     }
 
 
+    /////////////////////////////////////
+    ////  DISPARADORES
+    /////////////////////////////////////
+
+
+    // Habilitar Popovers
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
 </script>
