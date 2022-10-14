@@ -11,113 +11,10 @@
     const LOTTIE_LOADER_NUBE = 'https://assets10.lottiefiles.com/packages/lf20_x62chJ.json';
 
 
-    const ESTILO_TARJETA_1 = 'plantillaContacto1';
-    const ESTILO_TARJETA_2 = 'plantillaContacto2';
-    const ESTILO_TARJETA_3 = 'plantillaContacto3';
-    const ESTILO_TARJETA_4 = 'plantillaContacto4';
-    const ESTILO_TARJETA_5 = 'plantillaContacto5';
-    const ESTILO_FILA = 'fila';
-    const ESTILO_TABLA = 'tabla';
-
-    let estiloActual = ESTILO_TARJETA_1;
-
 
     /////////////////////////////////////
-    ////  EVENTOS
+    ////  FUNCIONES
     /////////////////////////////////////
-
-    // Inicio
-    window.addEventListener('load', function() {
-        mostrar();
-    })
-
-    // Eventos de botones mostrar contactos
-    document.getElementById('tarjetasEstiloTabla').addEventListener('click', function(event){
-        aplicarEstilo(ESTILO_TABLA);
-    });
-
-    document.getElementById('tarjetasEstiloFila').addEventListener('click', function(event){
-        aplicarEstilo(ESTILO_FILA);
-    });
-
-    document.getElementById('tarjetasEstilo1').addEventListener('click', function(event){
-        aplicarEstilo(ESTILO_TARJETA_1);
-    });
-
-    document.getElementById('tarjetasEstilo2').addEventListener('click', function(event){
-        aplicarEstilo(ESTILO_TARJETA_2);
-    });
-
-    document.getElementById('tarjetasEstilo3').addEventListener('click', function(event){
-        aplicarEstilo(ESTILO_TARJETA_3);
-    });
-
-    document.getElementById('tarjetasEstilo4').addEventListener('click', function(event){
-        aplicarEstilo(ESTILO_TARJETA_4);
-    });
-
-    document.getElementById('tarjetasEstilo5').addEventListener('click', function(event){
-        aplicarEstilo(ESTILO_TARJETA_5);
-    });
-
-
-    // Boton Subir
-    window.addEventListener('scroll', function () {
-        if (this.window.scrollY > 500) {
-            document.getElementById('botonSubir').style.transform = "scale(1)";
-        }
-        if (this.window.scrollY < 500) {
-            document.getElementById('botonSubir').style.transform = "scale(0)";
-        }
-    });
-
-
-    // Cargar Imagen
-    document.getElementById('imagen').addEventListener("change", function () {
-        document.getElementById('imgForm').src = URL.createObjectURL(this.files[0])
-    });
-
-
-    // Dragover
-    document.getElementById('imgForm').addEventListener('dragover', function (event) {
-        event.preventDefault();
-        this.style.filter = 'opacity(0%)';
-        document.getElementById('lottieForm').style.display = 'flex';
-    });
-
-    // Dragleave
-    document.getElementById('imgForm').addEventListener('dragleave', function (event) {
-        this.style.filter = 'opacity(100%)';
-        document.getElementById('lottieForm').style.display = 'none';
-    });
-
-
-    // Drop
-    document.getElementById('imgForm').addEventListener('drop', function (event) {
-        event.preventDefault();
-        let ficheros = event.dataTransfer.files;
-
-        // Pasar los archivos al Input
-        document.getElementById('imagen').files = ficheros;
-
-        // Creamos una URL para mostrar la imagen
-        document.getElementById('imgForm').src = URL.createObjectURL(ficheros[0]);
-
-        this.style.filter = 'opacity(100%)';
-        document.getElementById('lottieForm').style.display = 'none';
-    });
-
-    // Copiar correo
-    document.getElementById('copiarCorreo').addEventListener('click', function (event) {
-        copiarContenido(this, 'correoInfoContacto');
-    });
-
-    // Copiar telefono
-    document.getElementById('copiarTelefono').addEventListener('click', function (event) {
-        copiarContenido(this, 'telefonoInfoContacto');
-    });
-
-
     function copiarContenido(icono, id) {
         let texto = document.getElementById(id).textContent;
         navigator.clipboard.writeText(texto)
@@ -130,7 +27,6 @@
             });
     }
 
-
     function restaurarIcono(icono) {
         setTimeout(function () {
             icono.classList.remove('bi-check-lg');
@@ -141,218 +37,30 @@
 
     }
 
-
-
-
-    /////////////////////////////////////
-    ////  FUNCIONES
-    /////////////////////////////////////
-
-
     function subirArriba() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
 
-
-
-
-    function modificarContacto(numFila) {
-        limpiar();
-        // Cerrar Modal
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).hide();
-
-        let contacto = guardarDatosContacto();
-        contacto.fila = numFila;
-
-        let archivo = document.getElementById('imagen').files[0];
-
-        if (archivo) subirImagenModificar(contacto, archivo)
-        else {
-            google.script.run
-                .withSuccessHandler(modificarContactoOk)
-                .withFailureHandler(modificarContactoError)
-                .modificarContacto(contacto);
-        }
-    }
-
-    function subirImagenModificar(contacto, archivo) {
-        let fr = new FileReader();
-        fr.readAsArrayBuffer(archivo);
-
-        fr.onload = function () {
-            let imagen = {
-                nombre: archivo.name,
-                tipo: archivo.type,
-                datos: Array.from(new Int8Array(this.result))
-            };
-            google.script.run
-                .withSuccessHandler(modificarContactoOk)
-                .withFailureHandler(modificarContactoError)
-                .modificarContacto(contacto, imagen);
-        }
-    }
-
-    function modificarContactoOk() {
-        // Mostrar Notificacion
-        crearNotificacionCONTACTO('Contacto Modificado correctamente', 'Modificar Contacto');
-        mostrar();
-    }
-
-    function modificarContactoError() {
-        // Mostrar Notificacion
-        crearNotificacionERROR('El Contacto no se ha podido Modificar', 'Modificar Contacto');
-
-        mostrar();
-    }
-
-
-
-    function borrarContacto(numFila) {
-        limpiar();
-
-        google.script.run
-            .withSuccessHandler(borrarContactoOk)
-            .withFailureHandler(borrarContactoError)
-            .borrarContacto(numFila);
-    }
-
-    function borrarContactoOk() {
-        // Mostrar Notificacion
-        crearNotificacionBORRAR('Contacto Borrado correctamente', 'Borrar Contacto');
-
-        mostrar();
-    }
-
-    function borrarContactoError() {
-        // Mostrar Notificacion
-        crearNotificacionERROR('El Contacto no se ha podido Borrar', 'Borrar Contacto');
-
-        mostrar();
-
-    }
-
-
-
-    function insertarContacto() {
-        limpiar();
-        bootstrap.Modal.getInstance(document.getElementById('crearContactoModal')).hide();
-
-        let contacto = guardarDatosContacto();
-        let archivo = document.getElementById('imagen').files[0];
-
-        if (archivo) subirImagenInsertar(contacto, archivo)
-        else {
-            google.script.run
-                .withSuccessHandler(crearContactoOk)
-                .withFailureHandler(crearContactoError)
-                .insertarContacto(contacto);
-        }
-
-    }
-
-    function subirImagenInsertar(contacto, archivo) {
-        let fr = new FileReader();
-        fr.readAsArrayBuffer(archivo);
-
-        fr.onload = function () {
-            let imagen = {
-                nombre: archivo.name,
-                tipo: archivo.type,
-                datos: Array.from(new Int8Array(this.result))
-            };
-            google.script.run
-                .withSuccessHandler(crearContactoOk)
-                .withFailureHandler(crearContactoError)
-                .insertarContacto(contacto, imagen);
-        }
-    }
-
-    function crearContactoOk() {
-        document.getElementById('nombre').value = '';
-        document.getElementById('correo').value = '';
-
-        // Mostrar notificacion
-        crearNotificacionCONTACTO('Contacto insertado correctamente', 'Insertar Contacto');
-
-        mostrar();
-    }
-
-    function crearContactoError() {
-        // Mostrar notificacion
-        crearNotificacionERROR('No se ha podido insertar el contacto', 'Insertar Contacto');
-
-        mostrar();
-    }
-
-
-
-    function guardarDatosContacto() {
-        let contacto = {
-            nombre: document.getElementById('nombre').value,
-            apellido: document.getElementById('apellido').value,
-            correo: document.getElementById('correo').value,
-            telefono: document.getElementById('telefono').value,
-            imagen: document.getElementById('imgForm').src
-        }
-        return contacto;
-    }
-
-
-
-    function mostrar() {
-        switch (estiloActual) {
-            case ESTILO_TABLA: crearTablaContactos(); break;
-            case ESTILO_FILA: crearTarjetaContactos(); break;
-            default: crearTarjetasCuadradas(); break;
-
-        }
-        eliminarLoader();
-    }
-
-
-    function aplicarEstilo(estilo) {
-        estiloActual = estilo;
-        mostrar()
-    }
-
     function limpiar() {
-        eliminarTabla();
         eliminarTarjetas();
         // crearLoaderPuntos('divContactos');
         crearLoaderLottie('divContactos', LOTTIE_LOADER_NUBE);
     }
 
-    function eliminarTabla() {
-        let tabla = document.getElementById('tablaContactos');
-        if (tabla) tabla.remove();
+    function mostrar() {
+        crearTarjetas();
     }
 
-    function eliminarTarjetas() {
-        let tarjetas = document.getElementById('tarjetasContactos');
-        if (tarjetas) tarjetas.remove();
+    function extraerContactos(datos) {
+        let contactos = [];
+        for (let i = 1; i<datos.length; i++) {
+            contactos.push(new Contacto(datos[i][0], datos[i][1], datos[i][2], datos[i][3], datos[i][4],i+1));
+        }
+        return contactos;
     }
 
 
-
-
-    function importarContacto() {
-        limpiar();
-        google.script.run
-            .withSuccessHandler(importarContactosOk)
-            .withFailureHandler(importarContactosError)
-            .importarContactos();
-    }
-
-    function importarContactosOk() {
-        crearNotificacionOK('Se han agregado los Contantos correctamente', 'Importar Contactos');
-        mostrar();
-    }
-
-    function importarContactosError() {
-        crearNotificacionERROR('No se han podido Importar los contactos', 'Importar Contactos');
-        mostrar();
-    }
 
 
     /////////////////////////////////////

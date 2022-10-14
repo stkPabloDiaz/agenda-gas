@@ -1,0 +1,191 @@
+<script>
+    // INSERTAR CONTACTO
+    function insertarContacto() {
+        limpiar();
+        bootstrap.Modal.getInstance(document.getElementById('crearContactoModal')).hide();
+
+        let contacto = Contacto.guardarDatosContacto();
+        let archivo = document.getElementById('imagen').files[0];
+
+        if (archivo) subirImagenInsertar(contacto, archivo)
+        else {
+            google.script.run
+                .withSuccessHandler(crearContactoOk)
+                .withFailureHandler(crearContactoError)
+                .insertarContacto(contacto);
+        }
+
+    }
+
+    function subirImagenInsertar(contacto, archivo) {
+        let fr = new FileReader();
+        fr.readAsArrayBuffer(archivo);
+
+        fr.onload = function () {
+            let imagen = {
+                nombre: archivo.name,
+                tipo: archivo.type,
+                datos: Array.from(new Int8Array(this.result))
+            };
+            google.script.run
+                .withSuccessHandler(crearContactoOk)
+                .withFailureHandler(crearContactoError)
+                .insertarContacto(contacto, imagen);
+        }
+    }
+
+    function crearContactoOk() {
+        document.getElementById('nombre').value = '';
+        document.getElementById('correo').value = '';
+
+        // Mostrar notificacion
+        crearNotificacionCONTACTO('Contacto insertado correctamente', 'Insertar Contacto');
+
+        mostrar();
+    }
+
+    function crearContactoError() {
+        // Mostrar notificacion
+        crearNotificacionERROR('No se ha podido insertar el contacto', 'Insertar Contacto');
+
+        mostrar();
+    }
+
+
+    // MODIFICAR CONTACTO
+    function modificarContacto(numFila) {
+        limpiar();
+        // Cerrar Modal
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).hide();
+
+        let contacto = Contacto.guardarDatosContacto(numFila);
+
+        let archivo = document.getElementById('imagen').files[0];
+
+        if (archivo) subirImagenModificar(contacto, archivo)
+        else {
+            google.script.run
+                .withSuccessHandler(modificarContactoOk)
+                .withFailureHandler(modificarContactoError)
+                .modificarContacto(contacto);
+        }
+    }
+
+    function subirImagenModificar(contacto, archivo) {
+        let fr = new FileReader();
+        fr.readAsArrayBuffer(archivo);
+
+        fr.onload = function () {
+            let imagen = {
+                nombre: archivo.name,
+                tipo: archivo.type,
+                datos: Array.from(new Int8Array(this.result))
+            };
+            google.script.run
+                .withSuccessHandler(modificarContactoOk)
+                .withFailureHandler(modificarContactoError)
+                .modificarContacto(contacto, imagen);
+        }
+    }
+
+    function modificarContactoOk() {
+        // Mostrar Notificacion
+        crearNotificacionCONTACTO('Contacto Modificado correctamente', 'Modificar Contacto');
+        mostrar();
+    }
+
+    function modificarContactoError() {
+        // Mostrar Notificacion
+        crearNotificacionERROR('El Contacto no se ha podido Modificar', 'Modificar Contacto');
+
+        mostrar();
+    }
+
+
+    // BORRAR CONTACTO
+    function borrarContacto(numFila) {
+        limpiar();
+
+        google.script.run
+            .withSuccessHandler(borrarContactoOk)
+            .withFailureHandler(borrarContactoError)
+            .borrarContacto(numFila);
+    }
+
+    function borrarContactoOk() {
+        // Mostrar Notificacion
+        crearNotificacionBORRAR('Contacto Borrado correctamente', 'Borrar Contacto');
+
+        mostrar();
+    }
+
+    function borrarContactoError() {
+        // Mostrar Notificacion
+        crearNotificacionERROR('El Contacto no se ha podido Borrar', 'Borrar Contacto');
+
+        mostrar();
+
+    }
+
+
+    // IMPORTAR CONTACTO
+    function importarContacto() {
+        limpiar();
+        google.script.run
+            .withSuccessHandler(importarContactosOk)
+            .withFailureHandler(importarContactosError)
+            .importarContactos();
+    }
+
+    function importarContactosOk() {
+        crearNotificacionOK('Se han agregado los Contantos correctamente', 'Importar Contactos');
+        mostrar();
+    }
+
+    function importarContactosError() {
+        crearNotificacionERROR('No se han podido Importar los contactos', 'Importar Contactos');
+        mostrar();
+    }
+
+
+    // CREAR TARJETAS
+    function crearTarjetas() {
+        limpiar();
+        google.script.run
+            .withSuccessHandler(crearTarjetasOk)
+            .withFailureHandler(crearTarjetasError)
+            .obtenerDatos();
+
+    }
+
+    function crearTarjetasError() {
+        crearNotificacionError('No se han podido Crear las Tarjetas','ERROR');
+        eliminarLoader();
+    }
+
+    function crearTarjetasOk(datos) {
+        // Extraer contactos
+        let contactos = extraerContactos(datos);
+
+        let tarjetas = document.createElement('div');
+        tarjetas.id = 'tarjetasContactos';
+        tarjetas.classList.add('d-flex', 'justify-content-center', 'flex-wrap');
+
+        // Por cada contacto creamos la tarjeta
+        contactos.forEach(contacto => tarjetas.appendChild(contacto.obtenerTarjeta()));
+
+        //Agregar tarjetas
+        document.getElementById('divContactos').appendChild(tarjetas);
+
+        // Eliminamos el Loader
+        eliminarLoader();
+
+    }
+
+    function eliminarTarjetas() {
+        let tarjetas = document.getElementById('tarjetasContactos');
+        if (tarjetas) tarjetas.remove();
+    }
+
+
+</script>
