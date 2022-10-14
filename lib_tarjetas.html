@@ -4,11 +4,11 @@ function crearTarjetaContactos() {
 
     google.script.run
         .withSuccessHandler(crearTarjetasContactosOk)
-        .withFailureHandler(crearTarjetasContactosError)
+        .withFailureHandler(crearTarjetasError)
         .obtenerDatos();
 }
 
-function crearTarjetasContactosError() {
+function crearTarjetasError() {
     // Mostrar Notificacion de Error
     crearNotificacionERROR('No se han podido Crear las Tarjetas de los contactos','Tarjetas de contactos');
 
