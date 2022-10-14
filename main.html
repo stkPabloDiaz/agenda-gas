@@ -1,9 +1,12 @@
 <main>
     <!-- Botones Superiores -->
     <div class="d-flex justify-content-center my-3">
-        <button type="button" class="btn btn-success m-2" onclick="crearTarjetaContactos()"><i class="bi bi-postcard"></i></button>
-        <button type="button" class="btn btn-success m-2" onclick="crearTablaContactos()"><i class="bi bi-table"></i></button>
-        <button type="button" class="btn btn-primary m-2" onclick="abrirModalCrearContacto()"><i class="bi bi-person-plus"></i></button>
+        <button type="button" class="btn btn-success m-2" onclick="crearTarjetaContactos()"><i
+                class="bi bi-postcard"></i></button>
+        <button type="button" class="btn btn-success m-2" onclick="crearTablaContactos()"><i
+                class="bi bi-table"></i></button>
+        <button type="button" class="btn btn-primary m-2" onclick="abrirModalCrearContacto()"><i
+                class="bi bi-person-plus"></i></button>
         <button type="button" class="btn btn-warning m-2" onclick="importarContacto()">+ 5</button>
     </div>
 
@@ -17,7 +20,7 @@
         </div>
     </div>
 
-    <!-- Modal Contactos -->
+    <!-- Modal Crear / Modificar Contacto -->
     <div class="modal fade" id="crearContactoModal" tabindex="-1" aria-labelledby="tituloCrearContactoModal"
         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-lg modal-dialog">
@@ -34,31 +37,39 @@
                                 <!-- Nombre -->
                                 <div class="mb-2">
                                     <label for="nombre" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control form-control-sm" name="nombre" id="nombre" pattern="[\D]*" title="El Nombre no puede contener números" required>
+                                    <input type="text" class="form-control form-control-sm" name="nombre" id="nombre"
+                                        pattern="[\D]*" title="El Nombre no puede contener números" required>
                                 </div>
 
                                 <!-- Apellido -->
                                 <div class="mb-2">
                                     <label for="apellido" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control form-control-sm" name="apellido" id="apellido" pattern="[^0-9]*" title="El Apellido no puede contener números"  required>
+                                    <input type="text" class="form-control form-control-sm" name="apellido"
+                                        id="apellido" pattern="[^0-9]*" title="El Apellido no puede contener números"
+                                        required>
                                 </div>
 
                                 <!-- Correo -->
                                 <div class="input-group mb-2">
                                     <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-                                    <input type="email" class="form-control form-control-sm" name="correo" id="correo" required>
+                                    <input type="email" class="form-control form-control-sm" name="correo" id="correo"
+                                        required>
                                 </div>
 
                                 <!-- Telefono -->
                                 <div class="input-group mb-2">
                                     <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
-                                    <input type="tel" class="form-control form-control-sm" name="telefono" id="telefono" pattern="[\d]{9,11}" title="El Teléfono debe contener entre 9 y 11 dígitos numéricos"  required>
+                                    <input type="tel" class="form-control form-control-sm" name="telefono" id="telefono"
+                                        pattern="[\d]{9,11}"
+                                        title="El Teléfono debe contener entre 9 y 11 dígitos numéricos" required>
                                 </div>
 
                                 <!-- Seleccionar Imagen -->
                                 <div class="mb-2">
-                                    <label for="imagen" class="form-label">Selecciones una imagen para el Contacto</label>
-                                    <input type="file" accept="imagen/*" class="form-control form-control-sm" name="imagen" id="imagen">
+                                    <label for="imagen" class="form-label">Selecciones una imagen para el
+                                        Contacto</label>
+                                    <input type="file" accept="imagen/*" class="form-control form-control-sm"
+                                        name="imagen" id="imagen">
                                 </div>
 
 
@@ -66,10 +77,13 @@
 
                             <!-- Parte Derecha del Formulario de contacto -->
                             <div class="div-img-form">
-                                <i class="icono-form btn bi bi-question-circle-fill" data-bs-toggle="popover" data-bs-content="Se recomiendan imagenes cuadradas para una mejor visualizacion, imagenes mas grandes podran ser cortadas; resolucion recomendada 320x320 pixeles" data-bs-trigger="hover"></i>
+                                <i class="icono-form btn bi bi-question-circle-fill" data-bs-toggle="popover"
+                                    data-bs-content="Se recomiendan imagenes cuadradas para una mejor visualizacion, imagenes mas grandes podran ser cortadas; resolucion recomendada 320x320 pixeles"
+                                    data-bs-trigger="hover"></i>
                                 <img class="img-fluid img-form" id="imgForm" alt="Imagen de Contacto">
                                 <div class="lottie-form" id="lottieForm">
-                                    <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_cn2e3rvz.json" speed="1" loop autoplay></lottie-player>
+                                    <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_cn2e3rvz.json"
+                                        speed="1" loop autoplay></lottie-player>
                                 </div>
                             </div>
 
@@ -80,6 +94,42 @@
                         <button type="submit" class="btn btn-success" id="botonCrearModificar">Crear Contacto</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Informacion de Contacto -->
+    <div class="modal fade" id="infoContactoModal" tabindex="-1" aria-labelledby=""
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center align-items-center flex-column">
+                        <!-- Parte Superior -->
+                        <div class="m-3">
+                            <h3 class="text-uppercase text-center fw-bold mb-2" id="nombreInfoContacto"></h3>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope-fill me-2"></i>
+                                <h5 class="me-4" id="correoInfoContacto"></h5>
+                                <i class="btn bi bi-clipboard boton-copiar" id="copiarCorreo" data-bs-toggle="tooltip" data-bs-placement="right" title=""></i>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-telephone-fill me-2"></i>
+                                <h5 class="me-4" id="telefonoInfoContacto"></h5>
+                                <i class="btn bi bi-clipboard boton-copiar" id="copiarTelefono" data-bs-toggle="tooltip" data-bs-placement="right" title=""></i>
+                            </div>
+                        </div>
+
+                        <!-- Parte Inferior -->
+                        <div class="m-3">
+                            <img id="imgInfoContacto" class="border border-4 border-dark rounded" alt="Vista previa de la Imagen del contacto">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>

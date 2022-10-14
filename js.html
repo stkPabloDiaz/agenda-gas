@@ -61,6 +61,40 @@
         document.getElementById('lottieForm').style.display = 'none';
     });
 
+    // Copiar correo
+    document.getElementById('copiarCorreo').addEventListener('click', function (event) {
+        copiarContenido(this, 'correoInfoContacto');
+    });
+
+    // Copiar telefono
+    document.getElementById('copiarTelefono').addEventListener('click', function (event) {
+        copiarContenido(this, 'telefonoInfoContacto');
+    });
+
+
+    function copiarContenido(icono, id) {
+        let texto = document.getElementById(id).textContent;
+        navigator.clipboard.writeText(texto)
+            .then(() => {
+                icono.classList.remove('bi-clipboard');
+                icono.classList.add('bi-check-lg');
+                icono.title = 'Copiado';
+                bootstrap.Tooltip.getOrCreateInstance(icono).show();
+                restaurarIcono(icono);
+            });
+    }
+
+
+    function restaurarIcono(icono) {
+        setTimeout(function () {
+            icono.classList.remove('bi-check-lg');
+            icono.classList.add('bi-clipboard');
+            icono.title = '';
+            bootstrap.Tooltip.getInstance(icono).dispose();
+        }, 2000);
+
+    }
+
 
 
 
@@ -274,4 +308,6 @@
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
     })
+
+
 </script>
